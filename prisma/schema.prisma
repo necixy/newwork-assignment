@@ -2,11 +2,55 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client"
-  output   = "../app/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
+}
+model Employee {
+  id              String           @id @default(cuid())
+  name            String
+  email           String           @unique
+  role            Role
+  position        String
+  phone           String?          // Sensitive
+  address         String?          // Sensitive
+  feedbacks       Feedback[]       @relation("FeedbackReceiver")
+  authoredFeedback Feedback[]      @relation("FeedbackAuthor")
+  absenceRequests AbsenceRequest[]
+}
+
+model Feedback {
+  id           String     @id @default(cuid())
+  text         String
+  polishedText String?
+  authorId     String
+  employeeId   String
+  author       Employee   @relation("FeedbackAuthor", fields: [authorId], references: [id])
+  employee     Employee   @relation("FeedbackReceiver", fields: [employeeId], references: [id])
+  createdAt    DateTime   @default(now())
+}
+
+model AbsenceRequest {
+  id           String        @id @default(cuid())
+  employeeId   String
+  employee     Employee      @relation(fields: [employeeId], references: [id])
+  startDate    DateTime
+  endDate      DateTime
+  status       AbsenceStatus @default(PENDING)
+  createdAt    DateTime      @default(now())
+}
+
+enum Role {
+  MANAGER
+  EMPLOYEE
+  COWORKER
+}
+
+enum AbsenceStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }

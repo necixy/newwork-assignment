@@ -1,3 +1,7 @@
+Decisions:
+
+1. Did not use real authentication since it was for demo, in real app, I'd rather use the authentication with hashed password and JWT token.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
