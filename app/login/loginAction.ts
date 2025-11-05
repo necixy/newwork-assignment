@@ -40,5 +40,5 @@ export async function loginAction(formData: FormData) {
     maxAge: 60 * 60 * 24 * 7, // 1 week
   });
 
-  redirect("/profile");
+  redirect("/dashboard");
 }

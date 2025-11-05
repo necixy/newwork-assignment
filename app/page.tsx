@@ -6,7 +6,7 @@ export default async function HomePage() {
   const cookieStore = await cookies();
   const userId = cookieStore.get("userId")?.value;
   if (userId) {
-    redirect("/profile");
+    redirect("/dashboard");
   }
   return (
     <main className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
