@@ -30,11 +30,6 @@ cp .env.example .env
 # Generate Prisma client
 npx prisma generate
 
-# Run migrations to create database schema
-npx prisma migrate dev
-
-# Seed the database with demo data
-npx prisma db seed
 ```
 
 4. **Start the development server:**
