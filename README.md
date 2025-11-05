@@ -17,7 +17,14 @@ A full-stack employee management application built with Next.js 16, Prisma, and 
 npm install
 ```
 
-2. **Set up the database:**
+2. **Set up environment variables:**
+
+```bash
+# Copy the example environment file
+cp .env.example .env
+```
+
+3. **Set up the database:**
 
 ```bash
 # Generate Prisma client
@@ -30,13 +37,13 @@ npx prisma migrate dev
 npx prisma db seed
 ```
 
-3. **Start the development server:**
+4. **Start the development server:**
 
 ```bash
 npm run dev
 ```
 
-4. **Open the application:**
+5. **Open the application:**
    Navigate to [http://localhost:3000](http://localhost:3000)
 
 ### Demo Login Credentials
