@@ -1,4 +1,5 @@
 import { PrismaClient, Role, AbsenceStatus } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
@@ -7,11 +8,15 @@ async function main() {
   type EmployeeSeed = {
     name: string;
     email: string;
+    password: string;
     role: Role;
     position: string;
     phone?: string;
     address?: string;
   };
+
+  const plainPassword = "password123";
+  const hashedPassword = await bcrypt.hash(plainPassword, 10);
 
   const employeesData: EmployeeSeed[] = [
     // Managers
@@ -20,6 +25,7 @@ async function main() {
       email: "alice.manager@example.com",
       role: Role.MANAGER,
       position: "HR Manager",
+      password: hashedPassword,
       phone: "123-456-7890",
       address: "123 Main St, City",
     },
@@ -28,6 +34,7 @@ async function main() {
       email: "david.manager@example.com",
       role: Role.MANAGER,
       position: "Operations Manager",
+      password: hashedPassword,
       phone: "321-654-0987",
       address: "789 Oak St, City",
     },
@@ -37,6 +44,7 @@ async function main() {
       email: "bob.employee@example.com",
       role: Role.EMPLOYEE,
       position: "Software Engineer",
+      password: hashedPassword,
       phone: "987-654-3210",
       address: "456 Elm St, City",
     },
@@ -45,6 +53,7 @@ async function main() {
       email: "eve.employee@example.com",
       role: Role.EMPLOYEE,
       position: "QA Analyst",
+      password: hashedPassword,
       phone: "555-123-4567",
       address: "101 Pine St, City",
     },
@@ -53,6 +62,7 @@ async function main() {
       email: "frank.employee@example.com",
       role: Role.EMPLOYEE,
       position: "DevOps Engineer",
+      password: hashedPassword,
       phone: "444-222-1111",
       address: "202 Maple St, City",
     },
@@ -61,12 +71,14 @@ async function main() {
       name: "Charlie Coworker",
       email: "charlie.coworker@example.com",
       role: Role.COWORKER,
+      password: hashedPassword,
       position: "Product Designer",
     },
     {
       name: "Grace Coworker",
       email: "grace.coworker@example.com",
       role: Role.COWORKER,
+      password: hashedPassword,
       position: "UX Researcher",
     },
   ];
