@@ -15,21 +15,27 @@ export async function submitFeedbackAction(formData: FormData) {
   const employeeId = (formData.get("employeeId") as string) || authorId;
 
   let polishedText: string | undefined = undefined;
-  if (polish && text) {
+  if (polish && text && process.env.HUGGINGFACE_API_TOKEN) {
     // Call HuggingFace Inference API for text polishing
-    const response = await fetch(
-      "https://api-inference.huggingface.co/models/facebook/bart-large-cnn",
-      {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer hf_xxx", // Replace with your free token or remove for public models
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ inputs: text }),
-      }
-    );
-    const result = await response.json();
-    polishedText = result[0]?.summary_text || text;
+    try {
+      const response = await fetch(
+        "https://api-inference.huggingface.co/models/facebook/bart-large-cnn",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${process.env.HUGGINGFACE_API_TOKEN}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ inputs: text }),
+        }
+      );
+      const result = await response.json();
+      polishedText = result[0]?.summary_text || text;
+    } catch (error) {
+      console.error("Failed to polish feedback with AI:", error);
+      // Fallback to original text if API fails
+      polishedText = text;
+    }
   }
 
   await prisma.feedback.create({

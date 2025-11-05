@@ -104,8 +104,10 @@ All demo users use the password: `password123`
 #### 6. **Optional AI Feedback Polishing**
 
 - Integrated HuggingFace Inference API for text summarization/polishing
-- **Implementation**: Checkbox in feedback forms triggers API call
-- **Trade-off**: Requires API token (placeholder in code), adds latency (acceptable for async feedback)
+- **Current State**: Fully implemented with environment variable configuration
+- **Implementation**: Checkbox in feedback forms triggers API call when `HUGGINGFACE_API_TOKEN` is set
+- **To Enable**: Get free token from [HuggingFace](https://huggingface.co/settings/tokens) and add to `.env` file
+- **Graceful Fallback**: If token not configured or API fails, original text is preserved
 
 #### 7. **Modern UI with Gradients**
 
@@ -160,7 +162,7 @@ prisma/
 
 - Employee directory with all company employees
 - Submit feedback to any employee
-- Optional AI-powered feedback polishing (using HuggingFace)
+- Optional AI-powered feedback polishing (enable by adding HuggingFace API token to `.env`)
 - View own submitted feedback
 
 ### Cross-Cutting Features
@@ -227,7 +229,7 @@ prisma/
    - Feedback categories/tags (e.g., teamwork, technical skills)
    - Anonymous feedback option
    - Feedback request workflow (request feedback from specific people)
-   - Better AI integration with fine-tuned prompts or GPT-4
+   - Better AI integration with fine-tuned prompts or GPT-4 instead of summarization model
 
 ### Lower Priority
 
@@ -284,11 +286,23 @@ npx prisma db seed   # Seed database with demo data
 
 ## 🔧 Environment Variables
 
-Create a `.env` file in the root directory:
+Create a `.env` file in the root directory (or copy from `.env.example`):
 
 ```env
+# Database Configuration
 DATABASE_URL="file:./dev.db"
+
+# Optional: HuggingFace API Token for AI-powered feedback polishing
+# Get your free token from: https://huggingface.co/settings/tokens
+# HUGGINGFACE_API_TOKEN="hf_your_token_here"
 ```
+
+**To Enable AI Feedback Polishing:**
+
+1. Sign up for a free account at [HuggingFace](https://huggingface.co)
+2. Generate an API token at [https://huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
+3. Add the token to your `.env` file by uncommenting and replacing `hf_your_token_here`
+4. Restart the development server
 
 For production, replace with PostgreSQL connection string:
 
